@@ -25,14 +25,13 @@ export function getTabBarIcon(routeName, focused, color, size = 22) {
 
 const styles = StyleSheet.create({
   iconWrapper: {
-    minWidth: 44,
-    height: 44,
+    width: 42,
+    height: 42,
     borderRadius: RADIUS.pill,
     alignItems: "center",
     justifyContent: "center",
   },
   iconWrapperActive: {
     backgroundColor: COLORS.primarySoft,
-    paddingHorizontal: 14,
   },
 });

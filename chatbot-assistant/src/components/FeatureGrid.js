@@ -2,7 +2,14 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { COLORS, RADIUS } from "../constants/theme";
 
-function SmallFeatureCard({ icon, title, description, warm = false, onPress }) {
+function SmallFeatureCard({
+  icon,
+  title,
+  description,
+  meta,
+  warm = false,
+  onPress,
+}) {
   return (
     <TouchableOpacity
       style={styles.smallCard}
@@ -12,13 +19,16 @@ function SmallFeatureCard({ icon, title, description, warm = false, onPress }) {
       <View style={[styles.iconBox, warm && styles.iconBoxWarm]}>
         <Text style={styles.iconText}>{icon}</Text>
       </View>
+
       <Text style={styles.cardTitle}>{title}</Text>
       <Text style={styles.cardDesc}>{description}</Text>
+
+      {meta ? <Text style={styles.metaText}>{meta}</Text> : null}
     </TouchableOpacity>
   );
 }
 
-function WideFeatureCard({ icon, title, description, onPress }) {
+function WideFeatureCard({ icon, title, description, meta, onPress }) {
   return (
     <TouchableOpacity
       style={styles.wideCard}
@@ -29,9 +39,11 @@ function WideFeatureCard({ icon, title, description, onPress }) {
         <View style={styles.iconBox}>
           <Text style={styles.iconText}>{icon}</Text>
         </View>
-        <View>
+
+        <View style={styles.wideTextArea}>
           <Text style={styles.cardTitle}>{title}</Text>
           <Text style={styles.cardDesc}>{description}</Text>
+          {meta ? <Text style={styles.metaText}>{meta}</Text> : null}
         </View>
       </View>
 
@@ -41,6 +53,10 @@ function WideFeatureCard({ icon, title, description, onPress }) {
 }
 
 export default function FeatureGrid({
+  faqCount = 0,
+  chatbotSuggestionCount = 0,
+  checklistRemainingCount = 0,
+  checklistCompletionRate = 0,
   onPressFAQ,
   onPressAI,
   onPressChecklist,
@@ -50,14 +66,16 @@ export default function FeatureGrid({
       <SmallFeatureCard
         icon="?"
         title="자주 묻는 질문"
-        description="회사 생활의 모든 궁금증을 해결하세요."
+        description="회사 생활의 주요 질문을 빠르게 확인하세요."
+        meta={`등록된 FAQ ${faqCount}개`}
         onPress={onPressFAQ}
       />
 
       <SmallFeatureCard
         icon="🤖"
         title="AI 어시스턴트"
-        description="무엇이든 물어보세요. 즉시 답변해 드립니다."
+        description="온보딩 관련 질문에 즉시 답변해드립니다."
+        meta={`추천 질문 ${chatbotSuggestionCount}개`}
         warm
         onPress={onPressAI}
       />
@@ -65,7 +83,8 @@ export default function FeatureGrid({
       <WideFeatureCard
         icon="☑"
         title="체크리스트"
-        description="남은 항목: 4개"
+        description="온보딩 진행 현황을 확인하세요."
+        meta={`남은 항목 ${checklistRemainingCount}개 · 완료율 ${checklistCompletionRate}%`}
         onPress={onPressChecklist}
       />
     </View>
@@ -80,13 +99,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.surface,
     borderRadius: RADIUS.xl,
     padding: 18,
-    minHeight: 170,
+    minHeight: 182,
   },
   wideCard: {
     backgroundColor: COLORS.surface,
     borderRadius: RADIUS.xl,
     padding: 18,
-    minHeight: 96,
+    minHeight: 102,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -94,7 +113,10 @@ const styles = StyleSheet.create({
   wideLeft: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 14,
+    flex: 1,
+  },
+  wideTextArea: {
+    flex: 1,
   },
   iconBox: {
     width: 48,
@@ -104,6 +126,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 18,
+    marginRight: 14,
   },
   iconBoxWarm: {
     backgroundColor: "#F7E9E3",
@@ -122,10 +145,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 22,
     color: COLORS.textMuted,
+    marginBottom: 8,
+  },
+  metaText: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: COLORS.primary,
   },
   chevron: {
     fontSize: 30,
     color: "#A5A8B5",
     marginTop: -4,
+    marginLeft: 10,
   },
 });

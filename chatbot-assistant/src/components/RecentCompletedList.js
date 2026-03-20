@@ -3,10 +3,14 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { COLORS, RADIUS } from "../constants/theme";
 
 function RecentCompletedItem({ title, time, status = "SUCCESS" }) {
+  const isReady = status === "READY";
+
   return (
     <View style={styles.itemCard}>
-      <View style={styles.checkCircle}>
-        <Text style={styles.checkText}>✓</Text>
+      <View style={[styles.checkCircle, isReady && styles.readyCircle]}>
+        <Text style={[styles.checkText, isReady && styles.readyText]}>
+          {isReady ? "…" : "✓"}
+        </Text>
       </View>
 
       <View style={styles.info}>
@@ -14,20 +18,16 @@ function RecentCompletedItem({ title, time, status = "SUCCESS" }) {
         <Text style={styles.itemTime}>{time}</Text>
       </View>
 
-      <View style={styles.badge}>
-        <Text style={styles.badgeText}>{status}</Text>
+      <View style={[styles.badge, isReady && styles.readyBadge]}>
+        <Text style={[styles.badgeText, isReady && styles.readyBadgeText]}>
+          {status}
+        </Text>
       </View>
     </View>
   );
 }
 
-export default function RecentCompletedList({
-  items = [
-    { id: "1", title: "ID 제출", time: "오전 10:24", status: "SUCCESS" },
-    { id: "2", title: "계정 설정 완료", time: "어제", status: "SUCCESS" },
-  ],
-  onPressMore,
-}) {
+export default function RecentCompletedList({ items = [], onPressMore }) {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
@@ -86,10 +86,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginRight: 14,
   },
+  readyCircle: {
+    backgroundColor: COLORS.surfaceMuted,
+  },
   checkText: {
     color: COLORS.primary,
     fontWeight: "800",
     fontSize: 18,
+  },
+  readyText: {
+    color: COLORS.textMuted,
   },
   info: {
     flex: 1,
@@ -110,9 +116,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 7,
   },
+  readyBadge: {
+    backgroundColor: COLORS.surfaceMuted,
+  },
   badgeText: {
     color: COLORS.primary,
     fontSize: 12,
     fontWeight: "800",
+  },
+  readyBadgeText: {
+    color: COLORS.textMuted,
   },
 });
