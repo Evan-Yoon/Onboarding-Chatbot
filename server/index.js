@@ -5,6 +5,8 @@ import OpenAI from "openai";
 
 dotenv.config();
 
+console.log("API KEY EXISTS:", !!process.env.OPENAI_API_KEY);
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -22,7 +24,7 @@ app.post("/chat", async (req, res) => {
     }
 
     const completion = await client.chat.completions.create({
-      model: "gpt-4.1-mini",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -43,8 +45,17 @@ app.post("/chat", async (req, res) => {
 
     res.json({ answer });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "LLM request failed" });
+    console.error("OPENAI ERROR:");
+    console.error("message:", error?.message);
+    console.error("status:", error?.status);
+    console.error("code:", error?.code);
+    console.error("type:", error?.type);
+    console.error("full error:", error);
+
+    res.status(500).json({
+      error: "LLM request failed",
+      detail: error?.message || "unknown error",
+    });
   }
 });
 
