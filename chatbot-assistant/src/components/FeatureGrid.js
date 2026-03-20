@@ -36,7 +36,7 @@ function WideFeatureCard({ icon, title, description, meta, onPress }) {
       onPress={onPress}
     >
       <View style={styles.wideLeft}>
-        <View style={styles.iconBox}>
+        <View style={[styles.iconBox, styles.wideIconBox]}>
           <Text style={styles.iconText}>{icon}</Text>
         </View>
 
@@ -93,19 +93,25 @@ export default function FeatureGrid({
 
 const styles = StyleSheet.create({
   grid: {
-    gap: 14,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   smallCard: {
+    width: "48%",
     backgroundColor: COLORS.surface,
     borderRadius: RADIUS.xl,
-    padding: 18,
-    minHeight: 182,
+    padding: 16,
+    marginBottom: 14,
+    minHeight: 160,
   },
   wideCard: {
+    width: "100%",
     backgroundColor: COLORS.surface,
     borderRadius: RADIUS.xl,
-    padding: 18,
-    minHeight: 102,
+    padding: 16,
+    marginBottom: 14,
+    minHeight: 90,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -118,15 +124,18 @@ const styles = StyleSheet.create({
   wideTextArea: {
     flex: 1,
   },
+  wideIconBox: {
+    marginBottom: 0,
+    marginRight: 14,
+  },
   iconBox: {
-    width: 48,
-    height: 48,
+    width: 44,
+    height: 44,
     borderRadius: 14,
     backgroundColor: COLORS.primarySoft,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 18,
-    marginRight: 14,
+    marginBottom: 14,
   },
   iconBoxWarm: {
     backgroundColor: "#F7E9E3",

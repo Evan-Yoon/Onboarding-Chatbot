@@ -8,14 +8,14 @@ import FeatureGrid from "../components/FeatureGrid";
 import RecentCompletedList from "../components/RecentCompletedList";
 
 import faqData from "../data/faqData";
-import checklistData from "../data/checklistData";
 import chatbotData from "../data/chatbotData";
-
+import { useChecklist } from "../context/ChecklistContext";
 import { COLORS, SPACING } from "../constants/theme";
 
 export default function HomeScreen({ navigation }) {
   const faqCount = faqData.length;
   const chatbotSuggestionCount = chatbotData.suggestions.length;
+  const { segments } = useChecklist();
 
   const {
     totalChecklistCount,
@@ -24,9 +24,11 @@ export default function HomeScreen({ navigation }) {
     completionRate,
     recentCompletedItems,
   } = useMemo(() => {
-    const allItems = checklistData.flatMap((section) => section.items);
+    const allItems = segments.flatMap((section) => section.items);
 
-    const completedItems = allItems.filter((item) => item.completed);
+    const completedItems = allItems
+      .filter((item) => item.completed)
+      .sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0));
     const totalCount = allItems.length;
     const completedCount = completedItems.length;
     const remainingCount = totalCount - completedCount;
@@ -47,10 +49,10 @@ export default function HomeScreen({ navigation }) {
       completionRate: rate,
       recentCompletedItems: recentItems,
     };
-  }, []);
+  }, [segments]);
 
   return (
-    <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
+    <SafeAreaView style={styles.safe} edges={["top"]}>
       <AppHeader />
 
       <ScrollView
@@ -88,6 +90,7 @@ export default function HomeScreen({ navigation }) {
                   },
                 ]
           }
+          onPressMore={() => navigation.navigate("Checklist")}
         />
       </ScrollView>
     </SafeAreaView>
@@ -101,6 +104,6 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: SPACING.lg,
-    paddingBottom: 150,
+    paddingBottom: 32,
   },
 });

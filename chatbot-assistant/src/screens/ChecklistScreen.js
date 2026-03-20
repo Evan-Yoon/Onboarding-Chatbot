@@ -7,13 +7,13 @@ import ChecklistSegmentTabs from "../components/ChecklistSegmentTabs";
 import ChecklistProgressCard from "../components/ChecklistProgressCard";
 import ChecklistItemList from "../components/ChecklistItemList";
 import ChecklistHelpCard from "../components/ChecklistHelpCard";
-import checklistData from "../data/checklistData";
 import { COLORS, SPACING } from "../constants/theme";
+import { useChecklist } from "../context/ChecklistContext";
 
 export default function ChecklistScreen({ navigation }) {
-  const [segments, setSegments] = useState(checklistData);
+  const { segments, handleToggleItem } = useChecklist();
   const [selectedKey, setSelectedKey] = useState(
-    checklistData[0]?.key || "firstDay",
+    segments[0]?.key || "firstDay",
   );
 
   const selectedSegment = useMemo(() => {
@@ -28,23 +28,8 @@ export default function ChecklistScreen({ navigation }) {
 
   const totalCount = selectedSegment.items.length;
 
-  const handleToggleItem = (itemId) => {
-    setSegments((prev) =>
-      prev.map((segment) => {
-        if (segment.key !== selectedKey) return segment;
-
-        return {
-          ...segment,
-          items: segment.items.map((item) =>
-            item.id === itemId ? { ...item, completed: !item.completed } : item,
-          ),
-        };
-      }),
-    );
-  };
-
   return (
-    <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
+    <SafeAreaView style={styles.safe} edges={["top"]}>
       <AppHeader title="Checklist" />
 
       <ScrollView
@@ -83,6 +68,6 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: SPACING.lg,
-    paddingBottom: 150,
+    paddingBottom: 32,
   },
 });

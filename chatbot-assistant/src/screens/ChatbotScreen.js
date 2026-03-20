@@ -87,7 +87,7 @@ export default function ChatbotScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
+    <SafeAreaView style={styles.safe} edges={["top"]}>
       <AppHeader title="Chatbot" />
 
       <KeyboardAvoidingView
@@ -128,6 +128,6 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: SPACING.lg,
-    paddingBottom: 150,
+    paddingBottom: 32,
   },
 });

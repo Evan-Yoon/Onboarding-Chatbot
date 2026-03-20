@@ -35,7 +35,7 @@ export default function FAQScreen({ navigation }) {
   }, [searchText, selectedCategory]);
 
   return (
-    <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
+    <SafeAreaView style={styles.safe} edges={["top"]}>
       <AppHeader title="FAQ" />
 
       <ScrollView
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: SPACING.lg,
-    paddingBottom: 150,
+    paddingBottom: 32,
   },
   titleSection: {
     marginTop: 10,
